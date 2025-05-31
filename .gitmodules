@@ -4,3 +4,6 @@
 [submodule "px4_single_drone_control/src/px4-offboard"]
 	path = px4_single_drone_control/src/px4-offboard
 	url = https://github.com/TheDronist/px4_drones_ros2_control.git
+[submodule "px4_single_drone_control/src/px4_msgs"]
+	path = px4_single_drone_control/src/px4_msgs
+	url = https://github.com/TheDronist/px4_drones_ros2_control.git
