@@ -31,7 +31,8 @@ setup(
                 'velocity_setpoint_control = px4_offboard.velocity_setpoint_control:main',   
                 'test_arming = px4_offboard.test_arming:main', 
                 'test_vtol = px4_offboard.test_vtol:main',   
-                'test_moveto_wp = px4_offboard.test_moveto_wp:main',          
+                'test_moveto_wp = px4_offboard.test_moveto_wp:main',      
+                'mission_example = px4_offboard.mission_example:main', 
         ],
     },
 )
