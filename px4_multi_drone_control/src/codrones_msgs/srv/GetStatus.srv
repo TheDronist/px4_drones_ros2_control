@@ -1,0 +1,5 @@
+# Request
+---
+# Response - Fleet status
+Status[] fleet_data
+bool success

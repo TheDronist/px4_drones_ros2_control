@@ -1,0 +1,8 @@
+# Request
+geometry_msgs/PoseStamped target_pose
+---
+# Result
+geometry_msgs/PoseStamped final_pose
+---
+# Feedback
+geometry_msgs/PoseStamped current_pose

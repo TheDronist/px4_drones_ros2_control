@@ -1,0 +1,5 @@
+# Request - New status
+uint8 status
+---
+# Response - Success
+bool success

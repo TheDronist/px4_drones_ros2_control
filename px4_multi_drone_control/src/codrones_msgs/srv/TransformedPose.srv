@@ -1,0 +1,11 @@
+# Request - Source and target frames and poses in source frame with timestamp
+geometry_msgs/PoseArray source_pose_array
+string source_frame
+string target_frame
+builtin_interfaces/Time stamp
+bool projection_2d
+bool keep_orientation
+---
+# Response - Poses in the new frame
+geometry_msgs/PoseArray target_pose_array
+bool success
