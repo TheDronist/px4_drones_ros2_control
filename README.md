@@ -1,4 +1,4 @@
-# px4_drones_ros2_control
+# Px4 Drones ROS2 Control
 This repository contains different ROS2 nodes that control the movement of the PX4 drones in single and multiple systems.
 
 ## Single PX4 Drone Control
@@ -21,3 +21,14 @@ Just like the `px4_single_drone_control` package, the `px4_multi_drone_control` 
 - To spawn a certain number of drones in your environmen, run the command `./Tools/simulation/gazebo-classic/sitl_multiple_run.sh -m iris -n 2` inside the PX4-Autopilot folder, where `-n` stands for the number of drones you want to spawn and `-m` is their types. 
 - Then run the `MicroDDS Agent` to obtain the drones' topics using `MicroXRCEAgent udp4 -p 8888`. 
 - Now, you are ready to run any node of your choice using the command `ros2 launch px4-offboard <launch_file_name>`. You can use `QGroundControl` to visualise the movement of the drones.
+
+## Some Hardware Techniques
+
+- In case of using single drone simulation/implementation, there would be no problems as long as you are targeting a single drone system with a already declared `self.target_system` which equals to 1. However when using multi-drone system in simulation, each drone should have its own `self.target_system` which starts from 2 by default. Meaning, the drone which is attributed with a namespace `/px4_1/` would be targeted using an instance `self.target_system = 2` and the drone which is attributed with a namespace `/px4_2/` would be targeted using an instance `self.target_system = 3`, and so on. 
+- When dealing with multi-drone system in hardware, you have to follow the following steps:
+1. Set each drone system ID `MAV_SYS_ID` to have a unique value for each drone. Drones with same `MAV_SYS_ID` may be seen as a single drone system by the ground station. To do so, first connect the drone to the ground station using QGroundControl. Once connected, use the `Mavlink Shell` of the `PX4-Autopilo` by running `./Tools/mavlink_shell.py 0.0.0.0:14550`. Then, set the `MAV_SYS_ID` to a defined ID using `param set MAV_SYS_ID 1` for Drone 1, for example. It is worth mentioning that in hardware, the `MAV_SYS_ID` represents `self.target_system`. So unlike in simulation, for a drone with `MAV_SYS_ID = 1`, `self.target_system = 1`
+2. Set the drone should be set to their Station Mode, using the `adb shell` then `voxl-wifi`. The drones and the ground station should all be in the same network.
+3. To connect the drones to the ground station, you may use the Mavlink Shell. Turn ON the first drone and connect it to the ground station using QGroundControl. The drone is in its Station Mode. Thus to do so, first find the IP address of the drone and then use the `Comm Links` in QGroundControl to perform the connection. Once connected, close the QGC App and run the Mavlink Shell. Inside the shell, stop the `MicroDDS Client` that is running using `microdds_client stop` then run it again however with a predefined namespace using `microdds_client start -t udp -p 8888 -h 127.0.0.1 -n px4_1`. Findally close the Mavlink shell and check the topics using `ros2 topic list`.
+4. Do the same with the other drones.
+5. Each time a drone is added, check the topics if they are published using `ros2 topic list`.
+6. When you are done with all drones, now you are ready to control them using the designed ROS2 nodes. 
